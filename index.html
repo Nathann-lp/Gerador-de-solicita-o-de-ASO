@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Solicitação de ASO</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <h2>Gerador de Solicitação de ASO</h2>
+
+  <label>Tipo do Exame:</label>
+  <select id="tipo_exame">
+    <option value="ADMISSIONAL">Admissional</option>
+    <option value="DEMISSIONAL">Demissional</option>
+    <option value="MUDANÇA DE FUNÇÃO">Mudança de Função</option>
+  </select>
+
+  <label>Empregador:</label>
+  <input type="text" id="empregador" placeholder="Ex: Ocm seviços contabéis S/S">
+
+  <label>Tipo de Identificação do Empregador:</label>
+  <select id="tipo_identificacao" onchange="atualizarPlaceholder()">
+    <option value="CNPJ">CNPJ</option>
+    <option value="CPF">CPF</option>
+    <option value="CAEPF">CAEPF</option>
+  </select>
+
+  <input type="text" id="identificacao" placeholder="Ex: 00.000.000/0001-00">
+
+  <label>Empregado:</label>
+  <input type="text" id="empregado">
+
+  <label>CPF:</label>
+  <input type="text" id="cpf" placeholder="Ex: 000.000.000-00">
+
+  <label>Função:</label>
+  <input type="text" id="funcao" placeholder="Ex: MOTORISTA CARRETEIRO">
+
+  <label>Local e Data:</label>
+  <input type="text" id="local_data">
+
+  <button onclick="gerarASO()">Gerar PDF</button>
+  <button onclick="limparCampos()">Limpar</button>
+
+  <script src="script.js"></script>
+</body>
+</html>
