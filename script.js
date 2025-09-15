@@ -73,9 +73,9 @@ async function gerarASO() {
 
   // Informações
   doc.setFont(undefined, "bold");
-  doc.text(`EMPREGADOR: ${empregador}`, 20, 80);
+  doc.text(`EMPREGADOR(A): ${empregador}`, 20, 80);
   doc.text(`${tipoIdentificacao}: ${identificacao}`, 20, 90);
-  doc.text(`EMPREGADO: ${empregado}`, 20, 100);
+  doc.text(`EMPREGADO(A): ${empregado}`, 20, 100);
   doc.text(`CPF: ${cpf}`, 20, 110);
   doc.text(`FUNÇÃO: ${funcao}`, 20, 120);
 
