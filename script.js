@@ -55,6 +55,8 @@ async function gerarASO() {
   ])) return;
 
   const doc = new jsPDF();
+  const margemEsquerda = 20;
+  const larguraMaxima = 170; // Largura limite antes de quebrar a linha
 
   // Título
   doc.setFontSize(18);
@@ -64,22 +66,39 @@ async function gerarASO() {
   // Texto principal
   doc.setFontSize(14);
   doc.setFont(undefined, "normal");
-  doc.text(
-    `Favor providenciar o exame ${tipoExame} (ASO – Atestado de Saúde Ocupacional) do empregado abaixo.`,
-    20, 40, { maxWidth: 170, align: "justify" }
-  );
+  
+  // Rastreamento dinâmico da posição Y, começando na linha 40
+  let posicaoY = 40; 
 
-  doc.text("Informações necessárias para o médico responsável:", 20, 60);
+  const textoPrincipal = `Favor providenciar o exame ${tipoExame} (ASO – Atestado de Saúde Ocupacional) do empregado abaixo.`;
+  const linhasTextoPrincipal = doc.splitTextToSize(textoPrincipal, larguraMaxima);
+  doc.text(linhasTextoPrincipal, margemEsquerda, posicaoY, { align: "justify" });
 
-  // Informações
+  // Atualiza a posição Y com base na quantidade de linhas geradas no texto principal
+  posicaoY += (linhasTextoPrincipal.length * 7) + 10; 
+
+  doc.text("Informações necessárias para o médico responsável:", margemEsquerda, posicaoY);
+  posicaoY += 15; // Dá um espaço maior antes de listar os dados
+
+  // Função auxiliar para imprimir campos, quebrar linha se necessário, e atualizar o eixo Y
   doc.setFont(undefined, "bold");
-  doc.text(`EMPREGADOR(A): ${empregador}`, 20, 80);
-  doc.text(`${tipoIdentificacao}: ${identificacao}`, 20, 90);
-  doc.text(`EMPREGADO(A): ${empregado}`, 20, 100);
-  doc.text(`CPF: ${cpf}`, 20, 110);
-  doc.text(`FUNÇÃO: ${funcao}`, 20, 120);
+  const adicionarCampo = (rotulo, valor) => {
+    const textoCompleto = `${rotulo}: ${valor}`;
+    const linhas = doc.splitTextToSize(textoCompleto, larguraMaxima);
+    doc.text(linhas, margemEsquerda, posicaoY);
+    
+    // Adiciona 7 unidades no eixo Y para cada linha gerada
+    posicaoY += (linhas.length * 7) + 3; 
+  };
 
-  // Rodapé com data
+  // Informações dinâmicas
+  adicionarCampo("EMPREGADOR(A)", empregador);
+  adicionarCampo(tipoIdentificacao, identificacao);
+  adicionarCampo("EMPREGADO(A)", empregado);
+  adicionarCampo("CPF", cpf);
+  adicionarCampo("FUNÇÃO", funcao);
+
+  // Rodapé com data (fixo no final da página)
   doc.setFontSize(12);
   doc.setTextColor(100);
   doc.text(localData, 105, 280, { align: "center" });
